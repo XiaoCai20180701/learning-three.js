@@ -1,0 +1,29 @@
+1.搭建html框架
+2.渲染并查看三维对象
+  场景 scene
+  相机 camera
+  物体 mesh   --->  几何体geometry / 材质  material
+  渲染器  renderer
+  灯光 light
+  帧动画 requestAnimationFrame
+
+  场景是一个容器，主要用于保存/跟踪所要渲染的物体和使用的光源。
+
+3.stats.js
+  主要用于检测动画运行时的帧数。在动画运行时，该库可以在一个图片中显示画面每秒传输帧数。
+  function initStats(){
+          var stats = new Stats();
+          stats.setMode(0);
+          stats.domElement.style.position = "absolute";
+          stats.domElement.style.left = "0px";
+          stats.domElement.style.top = "0px";
+          document.getElementById("Stats-output").appendChild(stats.domElement);
+          return stats;
+  }
+  setMode(0):画面每秒传输帧数fps
+  setMode(1):画面渲染的时间
+
+ 4.Math.sin() / Math.cos() 使用step变量就可以创建出球体的运行轨迹。
+
+ 5.场景对浏览器的自适应
+   为浏览器注册一个事件监听器
