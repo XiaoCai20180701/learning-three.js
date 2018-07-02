@@ -1,0 +1,38 @@
+
+/*
+    @des three.js常用插件使用
+    @created by hdz in 2018/07/02
+*/
+1.性能检测
+stats.js
+  主要用于检测动画运行时的帧数。在动画运行时，该库可以在一个图片中显示画面每秒传输帧数。
+  function initStats(){
+          var stats = new Stats();
+          stats.setMode(0);
+          stats.domElement.style.position = "absolute";
+          stats.domElement.style.left = "0px";
+          stats.domElement.style.top = "0px";
+          document.getElementById("Stats-output").appendChild(stats.domElement);
+          return stats;
+  }
+  setMode(0):画面每秒传输帧数fps
+  setMode(1):画面渲染的时间
+
+
+
+2.界面图形
+ dat.gui.js
+ //创建控件对象变量
+ var controls={
+           缩放系数: 1,
+           转速: 0.01,
+            颜色 : material.color.getStyle(),
+ };
+ //关联空间数据创建交互界面
+ var gui = new dat.GUI();  //创建GUI对象
+
+
+
+ 3.数学
+ Math.ceil     向上舍入   25.1 -> 26  25.9 -> 26
+ Math.random   0.0-1.0 的一个伪随机数

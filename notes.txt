@@ -9,21 +9,23 @@
 
   场景是一个容器，主要用于保存/跟踪所要渲染的物体和使用的光源。
 
-3.stats.js
-  主要用于检测动画运行时的帧数。在动画运行时，该库可以在一个图片中显示画面每秒传输帧数。
-  function initStats(){
-          var stats = new Stats();
-          stats.setMode(0);
-          stats.domElement.style.position = "absolute";
-          stats.domElement.style.left = "0px";
-          stats.domElement.style.top = "0px";
-          document.getElementById("Stats-output").appendChild(stats.domElement);
-          return stats;
-  }
-  setMode(0):画面每秒传输帧数fps
-  setMode(1):画面渲染的时间
+3.
 
  4.Math.sin() / Math.cos() 使用step变量就可以创建出球体的运行轨迹。
 
  5.场景对浏览器的自适应
    为浏览器注册一个事件监听器
+
+
+
+
+ 二 构建three.js场景的基本组件
+
+ 1.创建场景
+ 一个场景：摄像机 / 光源 / 对象
+ 摄像机：决定屏幕上哪些东西需要渲染
+ 光源：决定材质如何显示以及用于产生阴影
+ 对象：是摄像机透视图里主要的渲染对象，如方块/球体等
+
+
+

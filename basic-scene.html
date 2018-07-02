@@ -1,0 +1,151 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>three.js示例</title>
+
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<!--显示统计图形-->
+<div id="Stats-output"></div>
+<div id="WebGL-output"></div>
+
+<script src="libs/three.js"></script>
+<script src="libs/stats.js"></script>
+<script src="libs/dat.gui.js"></script>
+<script>
+
+    function init() {
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
+        var renderer = new THREE.WebGLRenderer();
+        //renderer.setClearColorHex();
+        renderer.setClearColor(new THREE.Color(0xEEEEEE, 1.0));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMapEnabled = true;  //给物体添加阴影效果
+
+        var stats = initStats();
+
+        // create the ground plane
+        var planeGeometry = new THREE.PlaneGeometry(60, 40, 1, 1);
+        var planeMaterial = new THREE.MeshLambertMaterial({color: 0xffffff});
+        var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.receiveShadow = true;
+
+        // rotate and position the plane
+        plane.rotation.x = -0.5 * Math.PI;
+        plane.position.x = 0;
+        plane.position.y = 0;
+        plane.position.z = 0;
+
+        // add the plane to the scene
+        scene.add(plane);
+
+        //相机的初始位置
+        camera.position.x = -30;
+        camera.position.y = 40;
+        camera.position.z = 30;
+        camera.lookAt(scene.position);
+
+        //灯光
+        // add subtle ambient lighting
+        var ambientLight = new THREE.AmbientLight(0x0c0c0c);
+        scene.add(ambientLight);
+
+        // add spotlight for the shadows
+        var spotLight = new THREE.SpotLight(0xffffff);
+        spotLight.position.set(-40, 60, -10);
+        spotLight.castShadow = true;
+        scene.add(spotLight);
+
+        spotLight.castShadow = true;
+        // add the output of the renderer to the html element
+        document.getElementById("WebGL-output").appendChild(renderer.domElement);
+
+        window.addEventListener("resize",onResize,false);
+
+        //
+        var controls = new function () {
+            this.rorationSpeed = 0.02;
+            this.numberOfObjects = scene.children.length;
+            this.addCube = function(){
+                var cubeSize = Math.ceil((Math.random()*3));
+                var cubeGeometry = new THREE.BoxGeometry(cubeSize,cubeSize,cubeSize);
+                var cubeMaterial = new THREE.MeshLambertMaterial({color:Math.random()*0xffffff});
+                var cube = new THREE.Mesh(cubeGeometry,cubeMaterial);
+                cube.castShadow = true;
+                cube.name = "cube-"+scene.children.length;
+
+                // position the cube randomly in the scene
+
+                cube.position.x = -30 + Math.round((Math.random() * planeGeometry.parameters.width));
+                cube.position.y = Math.round((Math.random() * 5));
+                cube.position.z = -20 + Math.round((Math.random() * planeGeometry.parameters.height));
+
+                // add the cube to the scene
+                scene.add(cube);
+                this.numberOfObjects = scene.children.length;
+            }
+        }
+
+        //创建gui界面
+        var gui = new dat.GUI();
+        gui.add(controls,'rorationSpeed');
+        gui.add(controls,'addCube');
+        gui.add(controls,'numberOfObjects').listen();
+
+        renderScene();
+        // render the scene
+        onResize();
+
+    }
+
+    function renderScene(){
+        stats.update();
+        runAnimation();
+        requestAnimationFrame(renderScene);
+        renderer.render(scene, camera);
+
+    }
+
+
+    function runAnimation() {
+        scene.traverse(function (e) {  //场景的遍历方法
+            if (e instanceof THREE.Mesh && e != plane) {
+
+                e.rotation.x += controls.rotationSpeed;
+                e.rotation.y += controls.rotationSpeed;
+                e.rotation.z += controls.rotationSpeed;
+            }
+        });
+    }
+
+
+    function onResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth,window.innerHeight);
+    }
+
+    //初始化统计对象
+    function initStats(){
+        var stats = new Stats();
+        stats.setMode(0);
+        stats.domElement.style.position = "absolute";
+        stats.domElement.style.left = "0px";
+        stats.domElement.style.top = "0px";
+        document.getElementById("Stats-output").appendChild(stats.domElement);
+        return stats;
+    }
+
+    window.onload = init;
+
+</script>
+
+</body>
+</html>
