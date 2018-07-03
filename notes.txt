@@ -29,3 +29,20 @@
 
 
 
+ 十 加载和使用纹理
+
+ 1.将纹理应用于材质
+ 纹理最基础的用法是作为 贴图 被添加在材质上。
+
+ THREE.ImageUtils.loadTexture
+ THREE.ImageUtils.loadTextureCube: 方块纹理
+
+ magFilter:指定纹理如何放大
+ minFilter:指定纹理如何缩小
+    属性：THREE.NearestFilter(最邻近过滤)
+         THREE.LinearFilter(线性过滤) ——> 在放大时会平滑很多，较少出现方块化
+
+
+
+
+
