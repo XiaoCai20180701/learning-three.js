@@ -36,3 +36,8 @@ stats.js
  3.数学
  Math.ceil     向上舍入   25.1 -> 26  25.9 -> 26
  Math.random   0.0-1.0 的一个伪随机数
+
+ 4.匿名函数  （形如下面的格式）
+this.addCube = function(){    //将匿名函数赋值给变量
+    return "huangxiaocai"
+ }
