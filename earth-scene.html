@@ -8,6 +8,9 @@
             margin: 0;
             overflow: hidden;
         }
+        canvas {
+            background: url("assets/textures/planets/bg_loading.cf75eeb.jpg");
+        }
     </style>
 </head>
 <body>
@@ -29,12 +32,28 @@
 
     var stats = initStats();
 
-    // var sphereGeometry = new THREE.SphereGeometry(9,60,60);
-    // var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});
-    // var sphere = new THREE.Mesh(sphereGeometry,sphereMaterial);
-    var sphere = creatMesh(new THREE.SphereGeometry(9,60,60));
- //   sphere.position.set(20,4,2);
-    scene.add(sphere);
+    var sphereGeometry = new THREE.SphereGeometry(9,60,60);
+    var sphereMaterial = new THREE.MeshPhongMaterial({
+        map: THREE.ImageUtils.loadTexture('assets/textures/planets/earth4.7cddb76.jpg'),
+        bumpMap: THREE.ImageUtils.loadTexture('assets/textures/planets/earth_bump.55b3930.jpg'),
+        bumpScale:   0.005,
+        specularMap: THREE.ImageUtils.loadTexture('assets/textures/planets/earth_spec.dc4fc60.jpg'),
+        specular: new THREE.Color('grey')
+    })
+     var sphere = new THREE.Mesh(sphereGeometry,sphereMaterial);
+     scene.add(sphere);
+
+     var textureLoader = new THREE.TextureLoader();
+     var group = new THREE.Group();
+     var map = textureLoader.load('assets/textures/planets/sprite1.png');
+     var material = new THREE.SpriteMaterial({
+         map: map,color:0xffffff,fog:true
+     });
+     var sprite = new THREE.Sprite(material);
+     group.add(sprite);
+     scene.add(group);
+
+
 
     //相机的初始位置
     camera.position.x = 15;
@@ -47,12 +66,12 @@
     var clock = new THREE.Clock();
 
     //灯光
-    var ambi = new THREE.AmbientLight(0x3300000);
-    scene.add(ambi);
+
     var directLight = new THREE.DirectionalLight(0xffffff);
-    directLight.position.set(350, 350, 150);
-    directLight.intensity = 0.4;
+    directLight.position.set(650, 350, 150);
+    directLight.intensity = 0.8;
     scene.add(directLight);
+
 
     // add the output of the renderer to the html element
     document.getElementById("WebGL-output").appendChild(renderer.domElement);
@@ -91,23 +110,6 @@
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth,window.innerHeight);
-    }
-
-    //TODO 地球材质需要替换
-    function creatMesh(geom){
-        var planetTexture = THREE.ImageUtils.loadTexture("assets/textures/planets/Earth.png");
-        var specularTexture = THREE.ImageUtils.loadTexture("assets/textures/planets/EarthSpec.png");
-        var normalTexture = THREE.ImageUtils.loadTexture("assets/textures/planets/EarthNormal.png");
-
-        var planetMaterial = new THREE.MeshPhongMaterial();
-        planetMaterial.specularMap = planetTexture;    //高光贴图
-        planetMaterial.specular = new THREE.Color("#fff");
-        planetMaterial.shininess = 2;   //高光强度
-
-        planetMaterial.normalMap = normalTexture;
-
-        var mesh = new THREE.SceneUtils.createMultiMaterialObject(geom,[planetMaterial])
-        return mesh
     }
 
     //初始化统计对象
